@@ -1,5 +1,5 @@
-# scratch-paint
-#### Scratch-paint provides a paint editor React component that takes and outputs SVGs or PNGs. It can convert between vector and bitmap modes.
+# clipcc-paint
+#### clipcc-paint provides a paint editor React component that takes and outputs SVGs or PNGs. It can convert between vector and bitmap modes.
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/LLK/scratch-paint.svg)](https://greenkeeper.io/)
 - Try it out at [https://llk.github.io/scratch-paint/](https://llk.github.io/scratch-paint/)
