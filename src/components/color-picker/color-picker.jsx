@@ -279,7 +279,6 @@ ColorPickerComponent.propTypes = {
     gradientType: PropTypes.oneOf(Object.keys(GradientTypes)).isRequired,
     hue: PropTypes.number.isRequired,
     isEyeDropping: PropTypes.bool.isRequired,
-    mode: PropTypes.oneOf(Object.keys(Modes)),
     onActivateEyeDropper: PropTypes.func.isRequired,
     isStrokeColor: PropTypes.bool.isRequired,
     onBrightnessChange: PropTypes.func.isRequired,
