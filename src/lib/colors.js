@@ -58,7 +58,7 @@ const getHsv = function (colorObj) {
     const isTransparent = colorObj === null;
     const isMixed = colorObj === MIXED;
     return isTransparent || isMixed ?
-        [50, 100, 100] : [
+        [50, 100, 100, 0] : [
             colorObj.hue * (100 / 360),
             colorObj.saturation * 100,
             colorObj.brightness * 100,

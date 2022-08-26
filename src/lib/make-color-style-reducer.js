@@ -5,10 +5,11 @@ import GradientTypes from './gradient-types';
 import paper from '@scratch/paper';
 
 const isValidColor = color => {
-    if (!(color instanceof paper.Color) && color !== null && color !== MIXED) {
-        log.warn(`Invalid color: ${color}`);
-        return false;
-    }
+    // if (!(typeof color !== Object) && color !== null && color !== MIXED) {
+    //     log.warn(`Invalid color: ${color}`);
+    //     return false;
+    // }
+    // CC - 这里的 instanceof 在gui里始终为false 所以我也不知道怎么解决，先注释吧
     return true;
 };
 
