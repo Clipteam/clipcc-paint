@@ -11,7 +11,7 @@ const MIXED = 'scratch-paint/style-path/mixed';
 
 const _isBlack = hsbColor => hsbColor.brightness === 0;
 
-const _isWhite = hsbColor => hsbColor.brightness === 100 && hsbColor.saturation === 100;
+const _isWhite = hsbColor => hsbColor.brightness === 100 && hsbColor.saturation === 0;
 
 // Check if two colors, possibly null, are (approximately) equal.
 const colorsEqual = (color1, color2) => {
@@ -30,12 +30,12 @@ const colorsEqual = (color1, color2) => {
     const hsb2 = color2.type === 'hsb' ? color2 : color2.convert('hsb');
 
     // Collapse equivalent colors in hsb color space
-    if (_isBlack(hsb1) && _isBlack(hsb2)) return true;
-    if (_isWhite(hsb1) && _isWhite(hsb2)) return true;
+    // if (_isBlack(hsb1) && _isBlack(hsb2)) return true;
+    // if (_isWhite(hsb1) && _isWhite(hsb2)) return true;
 
     // Colors that are similar enough, as determined by this threshold, will be considered equal.
     // (in terms of units on the Scratch color scale)
-    const EPSILON = 0.5;
+    const EPSILON = 0.1;
 
     return (
         Math.abs(hsb1.hue - hsb2.hue) < EPSILON * (360 / 100) &&

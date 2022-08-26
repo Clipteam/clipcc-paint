@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import {defineMessages, FormattedMessage, injectIntl} from 'react-intl';
 
 import classNames from 'classnames';
+import parseColor from 'parse-color';
+
 
 import Slider, {CONTAINER_WIDTH, HANDLE_WIDTH} from '../forms/slider.jsx';
 import LabeledIconButton from '../labeled-icon-button/labeled-icon-button.jsx';
@@ -17,6 +19,7 @@ import mixedFillIcon from '../color-button/mixed-fill.svg';
 import fillHorzGradientIcon from './icons/fill-horz-gradient-enabled.svg';
 import fillRadialIcon from './icons/fill-radial-enabled.svg';
 import fillSolidIcon from './icons/fill-solid-enabled.svg';
+import greyWhite from './icons/grey-white.png';
 import fillVertGradientIcon from './icons/fill-vert-gradient-enabled.svg';
 import swapIcon from './icons/swap.svg';
 import ColorProptype from '../../lib/color-proptype';
@@ -29,12 +32,7 @@ import ColorProptype from '../../lib/color-proptype';
  * @returns {string} A valid CSS color string representing the input HSV color.
  */
 const hsvToCssString = (h, s, v) => {
-    const scaledValue = v * 0.01;
-    const hslLightness = scaledValue - ((scaledValue * (s * 0.01)) / 2);
-    const m = Math.min(hslLightness, 1 - hslLightness);
-    const hslSaturation = (m === 0) ? 0 : (scaledValue - hslLightness) / m;
-
-    return `hsl(${h * 3.6}, ${hslSaturation * 100}%, ${hslLightness * 100}%)`;
+    return parseColor(`hsv(${3.6 * h}, ${s}, ${v})`).hex
 };
 
 const messages = defineMessages({
@@ -60,6 +58,11 @@ class ColorPickerComponent extends React.Component {
                 break;
             case 'brightness':
                 stops.push(hsvToCssString(this.props.hue, this.props.saturation, n));
+                break;
+            case 'alpha':
+                // reference TurboWarp/scratch-paint/src/components/color-picker/color-picker.jsx
+                let alpha = Math.round((n / 100) * 255).toString(16).padStart(2, '0');
+                stops.push(`${hsvToCssString(this.props.hue, this.props.saturation, this.props.brightness)}${alpha}`);
                 break;
             default:
                 throw new Error(`Unknown channel for color sliders: ${channel}`);
@@ -266,6 +269,27 @@ class ColorPickerComponent extends React.Component {
                         />
                     </div>
                 </div>
+                <div className={styles.row}>
+                    <div className={styles.rowHeader}>
+                        <span className={styles.labelName}>
+                            <FormattedMessage
+                                defaultMessage="Alpha"
+                                description="Label for the alpha component in the color picker"
+                                id="paint.paintEditor.alpha"
+                            />
+                        </span>
+                        <span className={styles.labelReadout}>
+                            {Math.round(this.props.alpha)}
+                        </span>
+                    </div>
+                    <div className={styles.rowSlider}>
+                        <Slider
+                            background={`${this._makeBackground('alpha')}, url("${greyWhite}")`}
+                            value={this.props.alpha}
+                            onChange={this.props.onAlphaChange}
+                        />
+                    </div>
+                </div>
             </div>
         );
     }
@@ -278,9 +302,11 @@ ColorPickerComponent.propTypes = {
     colorIndex: PropTypes.number.isRequired,
     gradientType: PropTypes.oneOf(Object.keys(GradientTypes)).isRequired,
     hue: PropTypes.number.isRequired,
+    alpha: PropTypes.number.isRequired,
     isEyeDropping: PropTypes.bool.isRequired,
     onActivateEyeDropper: PropTypes.func.isRequired,
     isStrokeColor: PropTypes.bool.isRequired,
+    onAlphaChange: PropTypes.func.isRequired,
     onBrightnessChange: PropTypes.func.isRequired,
     onChangeColor: PropTypes.func.isRequired,
     onChangeGradientTypeHorizontal: PropTypes.func.isRequired,

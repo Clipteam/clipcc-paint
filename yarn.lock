@@ -2498,10 +2498,10 @@ cli-width@^2.0.0:
   resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-2.2.1.tgz#b0433d0b4e9c847ef18868a4ef16fd5fc8271c48"
   integrity sha512-GRMWDxpOB6Dgk2E5Uo+3eEBvtOOlimMmpbFiKuLFnQzYDavtLFY3K5ona41jgN/WdRZtG7utuVSVTL4HbZHGkw==
 
-clipcc-l10n@3.1.4:
-  version "3.1.4"
-  resolved "https://registry.yarnpkg.com/clipcc-l10n/-/clipcc-l10n-3.1.4.tgz#643df728b6694916fbdc773ff4958d361990ee21"
-  integrity sha512-+bHYRhc4ge6AptsgWG1Ah86MGiO2l+rBZ935wxpz3/fOtBJdy+Fjn/Ewo4zvlDZ/Ry3e3jMBdzx0UmLXIj6xIA==
+clipcc-l10n@3.1.8:
+  version "3.1.8"
+  resolved "https://registry.npmmirror.com/clipcc-l10n/-/clipcc-l10n-3.1.8.tgz#094703a54469bec02e800d55a53e8ca0993f5086"
+  integrity sha512-YA0O0EtTdbsxSC719IR7H2L3y1km0a2krRK6gFE3DiDm+MxG57H7dLUPX/Do3V4tK1JJ1r9eJ/sJLdBhVQtDcg==
   dependencies:
     "@babel/cli" "^7.1.2"
     "@babel/core" "^7.1.2"

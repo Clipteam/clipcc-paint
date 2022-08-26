@@ -6,7 +6,7 @@ const CHANGE_FILL_COLOR_2 = 'scratch-paint/fill-style/CHANGE_FILL_COLOR_2';
 const CHANGE_FILL_GRADIENT_TYPE = 'scratch-paint/fill-style/CHANGE_FILL_GRADIENT_TYPE';
 const CLEAR_FILL_GRADIENT = 'scratch-paint/fill-style/CLEAR_FILL_GRADIENT';
 const CHANGE_FILL_COLOR_INDEX = 'scratch-paint/fill-style/CHANGE_FILL_COLOR_INDEX';
-const DEFAULT_COLOR = new paper.Color({hue: 259, saturation: 0.6, brightness: 1});
+const DEFAULT_COLOR = new paper.Color({hue: 259, saturation: 0.6, brightness: 1, alpha: 1});
 
 const reducer = makeColorStyleReducer({
     changePrimaryColorAction: CHANGE_FILL_COLOR,
