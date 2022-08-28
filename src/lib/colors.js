@@ -2,7 +2,7 @@ import {MIXED} from '../helper/style-path';
 import paper from '@scratch/paper';
 
 const makeColor = function (h, s, v) {
-    const color = new paper.Color({hue: h, saturation: s, brightness: v});
+    const color = new paper.Color({hue: h, saturation: s, brightness: v, alpha: 1});
 
     // Convert color's backing components to HSV a.k.a. HSB
     color.type = 'hsb';
@@ -58,10 +58,11 @@ const getHsv = function (colorObj) {
     const isTransparent = colorObj === null;
     const isMixed = colorObj === MIXED;
     return isTransparent || isMixed ?
-        [50, 100, 100] : [
+        [50, 100, 100, 0] : [
             colorObj.hue * (100 / 360),
             colorObj.saturation * 100,
-            colorObj.brightness * 100
+            colorObj.brightness * 100,
+            colorObj.alpha
         ];
 };
 

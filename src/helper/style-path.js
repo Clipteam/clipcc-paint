@@ -11,7 +11,7 @@ const MIXED = 'scratch-paint/style-path/mixed';
 
 const _isBlack = hsbColor => hsbColor.brightness === 0;
 
-const _isWhite = hsbColor => hsbColor.brightness === 100 && hsbColor.saturation === 100;
+const _isWhite = hsbColor => hsbColor.brightness === 100 && hsbColor.saturation === 0;
 
 // Check if two colors, possibly null, are (approximately) equal.
 const colorsEqual = (color1, color2) => {
@@ -20,22 +20,23 @@ const colorsEqual = (color1, color2) => {
     if (color1 === MIXED || color2 === MIXED) {
         return false; // Don't warn if one of the colors is mixed
     }
-
-    if (!(color1 instanceof paper.Color && color2 instanceof paper.Color)) {
-        log.warn('colorsEqual passed non-Colors');
-        return false;
-    }
+    // if (!(color1 instanceof paper.Color && color2 instanceof paper.Color)) {
+    //     log.warn('colorsEqual passed non-Colors');
+    //     return false;
+    // }
+    // CC - 这里的 instanceof 在gui里始终为false 所以我也不知道怎么解决，先注释吧
 
     const hsb1 = color1.type === 'hsb' ? color1 : color1.convert('hsb');
     const hsb2 = color2.type === 'hsb' ? color2 : color2.convert('hsb');
 
     // Collapse equivalent colors in hsb color space
-    if (_isBlack(hsb1) && _isBlack(hsb2)) return true;
-    if (_isWhite(hsb1) && _isWhite(hsb2)) return true;
+    // if (_isBlack(hsb1) && _isBlack(hsb2)) return true;
+    // if (_isWhite(hsb1) && _isWhite(hsb2)) return true;
+    // CC - 注释这里以便支持调整透明度，我不理解为什么LLK要在这里判断，甚至原本的判断代码写错了。
 
     // Colors that are similar enough, as determined by this threshold, will be considered equal.
     // (in terms of units on the Scratch color scale)
-    const EPSILON = 0.5;
+    const EPSILON = 0.1;
 
     return (
         Math.abs(hsb1.hue - hsb2.hue) < EPSILON * (360 / 100) &&

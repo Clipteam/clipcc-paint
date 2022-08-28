@@ -6,7 +6,7 @@ const CHANGE_STROKE_COLOR_2 = 'scratch-paint/stroke-style/CHANGE_STROKE_COLOR_2'
 const CHANGE_STROKE_GRADIENT_TYPE = 'scratch-paint/stroke-style/CHANGE_STROKE_GRADIENT_TYPE';
 const CLEAR_STROKE_GRADIENT = 'scratch-paint/stroke-style/CLEAR_STROKE_GRADIENT';
 const CHANGE_STROKE_COLOR_INDEX = 'scratch-paint/stroke-style/CHANGE_STROKE_COLOR_INDEX';
-const DEFAULT_COLOR = new paper.Color({hue: 0, saturation: 0, brightness: 0});
+const DEFAULT_COLOR = new paper.Color({hue: 0, saturation: 0, brightness: 0, alpha: 1});
 
 import {CHANGE_STROKE_WIDTH} from './stroke-width';
 

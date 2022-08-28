@@ -25,7 +25,8 @@ class ColorPicker extends React.Component {
             'handleChangeGradientTypeVertical',
             'handleHueChange',
             'handleSaturationChange',
-            'handleBrightnessChange'
+            'handleBrightnessChange',
+            'handleAlphaChange'
         ]);
 
         const color = props.colorIndex === 0 ? props.color : props.color2;
@@ -33,7 +34,8 @@ class ColorPicker extends React.Component {
         this.state = {
             hue: hsv[0],
             saturation: hsv[1],
-            brightness: hsv[2]
+            brightness: hsv[2],
+            alpha: hsv[3]
         };
     }
     UNSAFE_componentWillReceiveProps (newProps) {
@@ -44,7 +46,8 @@ class ColorPicker extends React.Component {
             this.setState({
                 hue: hsv[0],
                 saturation: hsv[1],
-                brightness: hsv[2]
+                brightness: hsv[2],
+                alpha: hsv[3]
             });
         }
     }
@@ -63,11 +66,21 @@ class ColorPicker extends React.Component {
             this.handleColorChange();
         });
     }
+    handleAlphaChange (alpha) {
+        this.setState({alpha: alpha / 100}, () => {
+            if (this.state.alpha === 0) {
+                this.props.onChangeColor(null);
+            } else {
+                this.handleColorChange();
+            }
+        });
+    }
     handleColorChange () {
         this.props.onChangeColor(new paper.Color({
             hue: this.state.hue * (360 / 100),
             saturation: this.state.saturation / 100,
-            brightness: this.state.brightness / 100
+            brightness: this.state.brightness / 100,
+            alpha: this.state.alpha
         }));
     }
     handleChangeGradientTypeHorizontal () {
@@ -88,6 +101,7 @@ class ColorPicker extends React.Component {
                 brightness={this.state.brightness}
                 hue={this.state.hue}
                 saturation={this.state.saturation}
+                alpha={this.state.alpha * 100}
                 color={this.props.color}
                 color2={this.props.color2}
                 colorIndex={this.props.colorIndex}
@@ -96,6 +110,7 @@ class ColorPicker extends React.Component {
                 mode={this.props.mode}
                 rtl={this.props.rtl}
                 shouldShowGradientTools={this.props.shouldShowGradientTools}
+                onAlphaChange={this.handleAlphaChange}
                 onBrightnessChange={this.handleBrightnessChange}
                 onChangeColor={this.props.onChangeColor}
                 onChangeGradientTypeHorizontal={this.handleChangeGradientTypeHorizontal}

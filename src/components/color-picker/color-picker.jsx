@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import {defineMessages, FormattedMessage, injectIntl} from 'react-intl';
 
 import classNames from 'classnames';
+import parseColor from 'parse-color';
+
 
 import Slider, {CONTAINER_WIDTH, HANDLE_WIDTH} from '../forms/slider.jsx';
 import LabeledIconButton from '../labeled-icon-button/labeled-icon-button.jsx';
@@ -10,6 +12,8 @@ import styles from './color-picker.css';
 import swatchStyles from '../swatches/swatches.css';
 import GradientTypes from '../../lib/gradient-types';
 import Swatches from '../../containers/swatches.jsx';
+import LiveInputHoc from '../forms/live-input-hoc.jsx';
+import Input from '../forms/input.jsx';
 import {MIXED} from '../../helper/style-path';
 
 import noFillIcon from '../color-button/no-fill.svg';
@@ -17,9 +21,12 @@ import mixedFillIcon from '../color-button/mixed-fill.svg';
 import fillHorzGradientIcon from './icons/fill-horz-gradient-enabled.svg';
 import fillRadialIcon from './icons/fill-radial-enabled.svg';
 import fillSolidIcon from './icons/fill-solid-enabled.svg';
+import greyWhite from './icons/grey-white.png';
 import fillVertGradientIcon from './icons/fill-vert-gradient-enabled.svg';
 import swapIcon from './icons/swap.svg';
 import ColorProptype from '../../lib/color-proptype';
+
+const LiveInput = LiveInputHoc(Input);
 
 /**
  * Converts the color picker's internal color representation (HSV 0-100) into a CSS color string.
@@ -29,12 +36,7 @@ import ColorProptype from '../../lib/color-proptype';
  * @returns {string} A valid CSS color string representing the input HSV color.
  */
 const hsvToCssString = (h, s, v) => {
-    const scaledValue = v * 0.01;
-    const hslLightness = scaledValue - ((scaledValue * (s * 0.01)) / 2);
-    const m = Math.min(hslLightness, 1 - hslLightness);
-    const hslSaturation = (m === 0) ? 0 : (scaledValue - hslLightness) / m;
-
-    return `hsl(${h * 3.6}, ${hslSaturation * 100}%, ${hslLightness * 100}%)`;
+    return parseColor(`hsv(${3.6 * h}, ${s}, ${v})`).hex
 };
 
 const messages = defineMessages({
@@ -60,6 +62,11 @@ class ColorPickerComponent extends React.Component {
                 break;
             case 'brightness':
                 stops.push(hsvToCssString(this.props.hue, this.props.saturation, n));
+                break;
+            case 'alpha':
+                // reference TurboWarp/scratch-paint/src/components/color-picker/color-picker.jsx
+                let alpha = Math.round((n / 100) * 255).toString(16).padStart(2, '0');
+                stops.push(`${hsvToCssString(this.props.hue, this.props.saturation, this.props.brightness)}${alpha}`);
                 break;
             default:
                 throw new Error(`Unknown channel for color sliders: ${channel}`);
@@ -213,7 +220,15 @@ class ColorPickerComponent extends React.Component {
                             />
                         </span>
                         <span className={styles.labelReadout}>
-                            {Math.round(this.props.hue)}
+                            <LiveInput
+                                range
+                                small
+                                max={100}
+                                min="0"
+                                type="number"
+                                value={Math.round(this.props.hue)}
+                                onSubmit={this.props.onHueChange}
+                            />
                         </span>
                     </div>
                     <div className={styles.rowSlider}>
@@ -234,7 +249,15 @@ class ColorPickerComponent extends React.Component {
                             />
                         </span>
                         <span className={styles.labelReadout}>
-                            {Math.round(this.props.saturation)}
+                            <LiveInput
+                                range
+                                small
+                                max={100}
+                                min="0"
+                                type="number"
+                                value={Math.round(this.props.saturation)}
+                                onSubmit={this.props.onSaturationChange}
+                            />
                         </span>
                     </div>
                     <div className={styles.rowSlider}>
@@ -255,7 +278,15 @@ class ColorPickerComponent extends React.Component {
                             />
                         </span>
                         <span className={styles.labelReadout}>
-                            {Math.round(this.props.brightness)}
+                            <LiveInput
+                                range
+                                small
+                                max={100}
+                                min="0"
+                                type="number"
+                                value={Math.round(this.props.brightness)}
+                                onSubmit={this.props.onBrightnessChange}
+                            />
                         </span>
                     </div>
                     <div className={styles.rowSlider}>
@@ -263,6 +294,35 @@ class ColorPickerComponent extends React.Component {
                             background={this._makeBackground('brightness')}
                             value={this.props.brightness}
                             onChange={this.props.onBrightnessChange}
+                        />
+                    </div>
+                </div>
+                <div className={styles.row}>
+                    <div className={styles.rowHeader}>
+                        <span className={styles.labelName}>
+                            <FormattedMessage
+                                defaultMessage="Alpha"
+                                description="Label for the alpha component in the color picker"
+                                id="paint.paintEditor.alpha"
+                            />
+                        </span>
+                        <span className={styles.labelReadout}>
+                            <LiveInput
+                                range
+                                small
+                                max={100}
+                                min="0"
+                                type="number"
+                                value={Math.round(this.props.alpha)}
+                                onSubmit={this.props.onAlphaChange}
+                            />
+                        </span>
+                    </div>
+                    <div className={styles.rowSlider}>
+                        <Slider
+                            background={`${this._makeBackground('alpha')}, url("${greyWhite}")`}
+                            value={this.props.alpha}
+                            onChange={this.props.onAlphaChange}
                         />
                     </div>
                 </div>
@@ -278,9 +338,11 @@ ColorPickerComponent.propTypes = {
     colorIndex: PropTypes.number.isRequired,
     gradientType: PropTypes.oneOf(Object.keys(GradientTypes)).isRequired,
     hue: PropTypes.number.isRequired,
+    alpha: PropTypes.number.isRequired,
     isEyeDropping: PropTypes.bool.isRequired,
     onActivateEyeDropper: PropTypes.func.isRequired,
     isStrokeColor: PropTypes.bool.isRequired,
+    onAlphaChange: PropTypes.func.isRequired,
     onBrightnessChange: PropTypes.func.isRequired,
     onChangeColor: PropTypes.func.isRequired,
     onChangeGradientTypeHorizontal: PropTypes.func.isRequired,
