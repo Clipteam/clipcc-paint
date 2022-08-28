@@ -2500,7 +2500,7 @@ cli-width@^2.0.0:
 
 clipcc-l10n@3.1.8:
   version "3.1.8"
-  resolved "https://registry.npmmirror.com/clipcc-l10n/-/clipcc-l10n-3.1.8.tgz#094703a54469bec02e800d55a53e8ca0993f5086"
+  resolved "https://registry.yarnpkg.com/clipcc-l10n/-/clipcc-l10n-3.1.8.tgz#094703a54469bec02e800d55a53e8ca0993f5086"
   integrity sha512-YA0O0EtTdbsxSC719IR7H2L3y1km0a2krRK6gFE3DiDm+MxG57H7dLUPX/Do3V4tK1JJ1r9eJ/sJLdBhVQtDcg==
   dependencies:
     "@babel/cli" "^7.1.2"
