@@ -326,6 +326,27 @@ class ColorPickerComponent extends React.Component {
                         />
                     </div>
                 </div>
+                <div className={styles.row}>
+                    <div className={styles.rowHeader}>
+                        <span className={styles.labelName}>
+                            <FormattedMessage
+                                defaultMessage="Hex"
+                                description="Label for the hex component in the color picker"
+                                id="paint.paintEditor.hex"
+                            />
+                        </span>
+                        <span className={styles.labelReadout}>
+                            <LiveInput
+                                small
+                                max='0'
+                                min='0'
+                                type="string"
+                                value={this.props.hex}
+                                onSubmit={this.props.onHexChange}
+                            />
+                        </span>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -339,10 +360,12 @@ ColorPickerComponent.propTypes = {
     gradientType: PropTypes.oneOf(Object.keys(GradientTypes)).isRequired,
     hue: PropTypes.number.isRequired,
     alpha: PropTypes.number.isRequired,
+    hex: PropTypes.string.isRequired,
     isEyeDropping: PropTypes.bool.isRequired,
     onActivateEyeDropper: PropTypes.func.isRequired,
     isStrokeColor: PropTypes.bool.isRequired,
     onAlphaChange: PropTypes.func.isRequired,
+    onHexChange: PropTypes.func.isRequired,
     onBrightnessChange: PropTypes.func.isRequired,
     onChangeColor: PropTypes.func.isRequired,
     onChangeGradientTypeHorizontal: PropTypes.func.isRequired,

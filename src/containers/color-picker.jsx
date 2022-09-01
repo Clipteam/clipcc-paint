@@ -26,7 +26,8 @@ class ColorPicker extends React.Component {
             'handleHueChange',
             'handleSaturationChange',
             'handleBrightnessChange',
-            'handleAlphaChange'
+            'handleAlphaChange',
+            'handleHexChange'
         ]);
 
         const color = props.colorIndex === 0 ? props.color : props.color2;
@@ -35,7 +36,8 @@ class ColorPicker extends React.Component {
             hue: hsv[0],
             saturation: hsv[1],
             brightness: hsv[2],
-            alpha: hsv[3]
+            alpha: hsv[3],
+            hex: color.toCSS(true)
         };
     }
     UNSAFE_componentWillReceiveProps (newProps) {
@@ -47,7 +49,8 @@ class ColorPicker extends React.Component {
                 hue: hsv[0],
                 saturation: hsv[1],
                 brightness: hsv[2],
-                alpha: hsv[3]
+                alpha: hsv[3],
+                hex: this.state.hex
             });
         }
     }
@@ -76,12 +79,35 @@ class ColorPicker extends React.Component {
         });
     }
     handleColorChange () {
-        this.props.onChangeColor(new paper.Color({
+        let color = new paper.Color({
             hue: this.state.hue * (360 / 100),
             saturation: this.state.saturation / 100,
             brightness: this.state.brightness / 100,
             alpha: this.state.alpha
-        }));
+        });
+        this.props.onChangeColor(color)
+        this.setState({
+            hex: color.toCSS(true)
+        })
+    }
+    handleHexChange (hex) {
+        if (hex !== this.state.hex) {
+            const color = new paper.Color(hex);
+            const hsv = getHsv(color);
+            this.setState({
+                hue: hsv[0],
+                saturation: hsv[1],
+                brightness: hsv[2],
+                alpha: this.state.alpha,
+                hex: color.toCSS(true)
+            }, () => {
+                this.handleColorChange();
+            })
+        } else if (hex === '') {
+            this.setState({
+                hex: hex
+            });
+        }
     }
     handleChangeGradientTypeHorizontal () {
         this.props.onChangeGradientType(GradientTypes.HORIZONTAL);
@@ -102,6 +128,7 @@ class ColorPicker extends React.Component {
                 hue={this.state.hue}
                 saturation={this.state.saturation}
                 alpha={this.state.alpha * 100}
+                hex={this.state.hex}
                 color={this.props.color}
                 color2={this.props.color2}
                 colorIndex={this.props.colorIndex}
@@ -111,6 +138,7 @@ class ColorPicker extends React.Component {
                 rtl={this.props.rtl}
                 shouldShowGradientTools={this.props.shouldShowGradientTools}
                 onAlphaChange={this.handleAlphaChange}
+                onHexChange={this.handleHexChange}
                 onBrightnessChange={this.handleBrightnessChange}
                 onChangeColor={this.props.onChangeColor}
                 onChangeGradientTypeHorizontal={this.handleChangeGradientTypeHorizontal}
