@@ -37,7 +37,7 @@ class ColorPicker extends React.Component {
             saturation: hsv[1],
             brightness: hsv[2],
             alpha: hsv[3],
-            hex: color.toCSS(true)
+            hex: (color !== null && color !== 'scratch-paint/style-path/mixed') ? color.toCSS(true) : '#000000'
         };
     }
     UNSAFE_componentWillReceiveProps (newProps) {
@@ -87,7 +87,7 @@ class ColorPicker extends React.Component {
         });
         this.props.onChangeColor(color)
         this.setState({
-            hex: color.toCSS(true)
+            hex: (color !== null && color !== 'scratch-paint/style-path/mixed') ? color.toCSS(true) : '#000000'
         })
     }
     handleHexChange (hex) {
@@ -99,7 +99,7 @@ class ColorPicker extends React.Component {
                 saturation: hsv[1],
                 brightness: hsv[2],
                 alpha: this.state.alpha,
-                hex: color.toCSS(true)
+                hex: (color !== null && color !== 'scratch-paint/style-path/mixed') ? color.toCSS(true) : '#000000'
             }, () => {
                 this.handleColorChange();
             })

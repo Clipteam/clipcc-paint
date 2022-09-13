@@ -53,6 +53,8 @@ class FillTool extends paper.Tool {
         } else if (!color) {
             // Null color means transparent because that is the standard in vector
             color = TRANSPARENT;
+        } else {
+            color = color.toCSS(true);
         }
         let changed = false;
         if (event.event.shiftKey) {
