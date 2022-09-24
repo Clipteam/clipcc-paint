@@ -310,8 +310,8 @@ const _makeBackgroundGuideLayer = function (format) {
     guideLayer.vectorBackground = vectorBackground;
 
     const bitmapBackground = _makeBackgroundPaper(
-        ART_BOARD_WIDTH,
-        ART_BOARD_HEIGHT,
+        ART_BOARD_WIDTH / CHECKERBOARD_SIZE,
+        ART_BOARD_HEIGHT / CHECKERBOARD_SIZE,
         '#D9E3F2', 0.55);
     bitmapBackground.position = CENTER;
     bitmapBackground.scaling = new paper.Point(CHECKERBOARD_SIZE, CHECKERBOARD_SIZE);
